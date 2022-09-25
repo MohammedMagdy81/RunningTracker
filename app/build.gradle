@@ -4,6 +4,7 @@ plugins {
     id("dagger.hilt.android.plugin")
     id "kotlin-kapt"
     id "androidx.navigation.safeargs.kotlin"
+    id 'kotlin-android-extensions'
 }
 
 android {
@@ -17,6 +18,10 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildFeatures{
+        viewBinding =true
     }
 
     buildTypes {
@@ -47,6 +52,10 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.5.1"
 
+    //lottie
+    def lottieVersion = "3.4.0"
+    implementation "com.airbnb.android:lottie:$lottieVersion"
+
     // hilt
     implementation("com.google.dagger:hilt-android:2.38.1")
     kapt("com.google.dagger:hilt-android-compiler:2.38.1")
@@ -74,7 +83,7 @@ dependencies {
     implementation 'com.jakewharton.timber:timber:4.7.1'
 
     // MPAndroidChart
-    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+    //implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 
     implementation 'android.arch.lifecycle:extensions:1.1.1'
 
