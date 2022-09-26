@@ -5,11 +5,17 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/setupFragment">
 
+    <action
+        android:id="@+id/action_global"
+        app:destination="@id/trackingFragment"
+        app:launchSingleTop="true"/>
+
+
     <fragment
         android:id="@+id/runFragment"
         android:name="com.magdy.runningapp.ui.RunFragment"
         android:label="fragment_run"
-        tools:layout="@layout/fragment_run" >
+        tools:layout="@layout/fragment_run">
         <action
             android:id="@+id/action_runFragment_to_trackingFragment"
             app:destination="@id/trackingFragment" />
@@ -23,7 +29,7 @@
         android:id="@+id/setupFragment"
         android:name="com.magdy.runningapp.ui.SetupFragment"
         android:label="fragment_setup"
-        tools:layout="@layout/fragment_setup" >
+        tools:layout="@layout/fragment_setup">
         <action
             android:id="@+id/action_setupFragment_to_runFragment"
             app:destination="@id/runFragment" />
@@ -37,7 +43,7 @@
         android:id="@+id/trackingFragment"
         android:name="com.magdy.runningapp.ui.TrackingFragment"
         android:label="fragment_tracking"
-        tools:layout="@layout/fragment_tracking" >
+        tools:layout="@layout/fragment_tracking">
         <action
             android:id="@+id/action_trackingFragment_to_runFragment"
             app:destination="@id/runFragment" />

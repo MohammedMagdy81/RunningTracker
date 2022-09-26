@@ -1,18 +1,15 @@
 package com.magdy.runningapp
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import androidx.navigation.NavController
-import androidx.navigation.NavDestination
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.magdy.runningapp.databinding.ActivityMainBinding
-import com.magdy.runningapp.db.RunDao
+import com.magdy.runningapp.utils.Constant.ACTION_TRACKING_FRAGMENT_SHOW
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -23,6 +20,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding=ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        navigateToTrackingFragmentIfNeeded(intent)
 
         bottom_navigation.setupWithNavController(navHostFragmentt.findNavController())
         navHostFragmentt.findNavController().addOnDestinationChangedListener{_,destination,_->
@@ -34,7 +32,17 @@ class MainActivity : AppCompatActivity() {
                 else->binding.bottomNavigation.visibility=View.GONE
             }
         }
-//
 
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        navigateToTrackingFragmentIfNeeded(intent)
+    }
+
+    private fun navigateToTrackingFragmentIfNeeded(intent: Intent?){
+        if (intent?.action==ACTION_TRACKING_FRAGMENT_SHOW){
+            navHostFragmentt.findNavController().navigate(R.id.action_global)
+        }
     }
 }
