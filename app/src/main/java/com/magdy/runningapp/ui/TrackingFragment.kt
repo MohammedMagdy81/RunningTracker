@@ -26,6 +26,7 @@ class TrackingFragment : Fragment(R.layout.fragment_tracking) {
         btnToggleRun.setOnClickListener{
             sendIntentWithAction(ACTION_START_OR_RESUME_SERVICE)
         }
+
         mapView.getMapAsync{
             googleMap=it
         }
