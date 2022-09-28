@@ -12,6 +12,8 @@ object Constant {
 
     const val REQUEST_CODE=200
 
+    const val CANCEL_DIALOG_TAG="cancelDialog"
+
     const val  ACTION_START_OR_RESUME_SERVICE="ACTION_START_OR_RESUME_SERVICE"
     const val  ACTION_STOP_SERVICE="ACTION_STOP_SERVICE"
     const val  ACTION_PAUSE_SERVICE="ACTION_PAUSE_SERVICE"
@@ -20,4 +22,11 @@ object Constant {
     const val NOTIFICATION_CHANNEL_ID="tracking..user"
     const val NOTIFICATION_CHANNEL_NAME="Tracking"
     const val NOTIFICATION_ID=1
+
+    const val SHARED_PREF_NAME="shredPref"
+
+    const val KEY_FIRST_TIME_TOGGLE="KEY_FIRST_TIME_TOGGLE"
+    const val KEY_NAME="KEY_NAME"
+    const val KEY_WEIGHT="KEY_WEIGHT"
+    const val KEY_LENGTH="KEY_LENGTH"
 }

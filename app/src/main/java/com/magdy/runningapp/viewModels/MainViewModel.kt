@@ -76,10 +76,10 @@ class MainViewModel @Inject constructor(
     fun sortType(sortType: SortType)=
         when(sortType){
             SortType.DATE->runsSortedByDate.value.let { runs.value=it }
-            SortType.TIME_RUNNING->runsSortedByTimeInMillis.value.let { runs.value=it }
-            SortType.AVE_SPEED->runsSortedByAveSpeed.value.let { runs.value=it }
-            SortType.CALORIES_BURNED->runsSortedByCaloriesBurned.value.let { runs.value=it }
-            SortType.DISTANCE->runsSortedByDistance.value.let { runs.value=it }
+            SortType.TIME_RUNNING->runsSortedByTimeInMillis.value?.let { runs.value=it }
+            SortType.AVE_SPEED->runsSortedByAveSpeed.value?.let { runs.value=it }
+            SortType.CALORIES_BURNED->runsSortedByCaloriesBurned.value?.let { runs.value=it }
+            SortType.DISTANCE->runsSortedByDistance.value?.let { runs.value=it }
         }.also {
             this.sortType=sortType
         }

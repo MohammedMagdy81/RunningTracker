@@ -3,6 +3,8 @@ package com.magdy.runningapp.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -10,13 +12,20 @@ import com.bumptech.glide.Glide
 import com.magdy.runningapp.R
 import com.magdy.runningapp.db.Run
 import com.magdy.runningapp.utils.TrackingUtility
-import kotlinx.android.synthetic.main.item_run.view.*
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.math.roundToInt
 
 class RunAdapter :RecyclerView.Adapter<RunAdapter.RunViewHolder>() {
 
-    class RunViewHolder(itemView:View):RecyclerView.ViewHolder(itemView)
+    class RunViewHolder(itemView:View):RecyclerView.ViewHolder(itemView){
+        val imageView=itemView.findViewById<ImageView>(R.id.ivRunImage)
+        val textDate=itemView.findViewById<TextView>(R.id.tvDate)
+        val textTime=itemView.findViewById<TextView>(R.id.tvTime)
+        val textDistance=itemView.findViewById<TextView>(R.id.tvDistance)
+        val textAvgSpeed=itemView.findViewById<TextView>(R.id.tvAvgSpeed)
+        val textCalories=itemView.findViewById<TextView>(R.id.tvCalories)
+    }
 
     private val differCallback=object:DiffUtil.ItemCallback<Run>(){
         override fun areItemsTheSame(oldItem: Run, newItem: Run): Boolean {
@@ -41,21 +50,24 @@ class RunAdapter :RecyclerView.Adapter<RunAdapter.RunViewHolder>() {
     override fun onBindViewHolder(holder: RunViewHolder, position: Int) {
        val run=differ.currentList[position]
         holder.itemView.apply {
-            Glide.with(this).load(run.img).into(ivRunImage)
+
+            Glide.with(this).load(run.img).into(holder.imageView)
+
             val calender=Calendar.getInstance().apply {
                 timeInMillis=run.timeStamp
             }
-            val dateFormat=SimpleDateFormat("dd.MM.yy",Locale.getDefault())
-            tvDate.text=dateFormat.format(calender.time)
+            val dateFormat=SimpleDateFormat("dd.MM.yy",Locale.ENGLISH)
+            holder.textDate.text=dateFormat.format(calender.time)
 
-            val aveSpeed="${run.aveSpeedInKMH} Km/h"
-            tvAvgSpeed.text=aveSpeed
+            val aveSpeed="${(run.aveSpeedInKMH*10000f).roundToInt() / 10000.0} km/h"
+            holder.textAvgSpeed.text=aveSpeed
 
-            val distanceKm="${run.distanceInMeter/1000}km"
-            tvDistance.text=distanceKm
+            val distanceKm="${run.distanceInMeter} m"
+            holder.textDistance.text=distanceKm
 
-            tvTime.text=TrackingUtility.getFormattedStopWitchTime(run.timeInMilliSecond)
-            tvCalories.text="${run.caloriesBurned}kcal"
+            holder.textTime.text=TrackingUtility.getFormattedStopWitchTime(run.timeInMilliSecond)
+
+            holder.textCalories.text="${run.caloriesBurned} kcal"
         }
     }
 

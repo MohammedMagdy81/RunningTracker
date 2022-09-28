@@ -17,6 +17,7 @@ import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.tasks.Task
 import com.magdy.runningapp.MainActivity
 import com.magdy.runningapp.R
 import com.magdy.runningapp.utils.Constant
@@ -113,11 +114,11 @@ class TrackingService : LifecycleService() {
             set(curNotificationBuilder, ArrayList<NotificationCompat.Action>())
         }
 
-       if (!serviceKilled){
-           curNotificationBuilder = baseNotificationBuilder
-               .addAction(R.drawable.ic_baseline_pause, notificationActionText, pendingIntent)
-           notificationManager.notify(NOTIFICATION_ID, curNotificationBuilder.build())
-       }
+        if (!serviceKilled) {
+            curNotificationBuilder = baseNotificationBuilder
+                .addAction(R.drawable.ic_baseline_pause, notificationActionText, pendingIntent)
+            notificationManager.notify(NOTIFICATION_ID, curNotificationBuilder.build())
+        }
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -207,12 +208,14 @@ class TrackingService : LifecycleService() {
                     interval = 5000L
                     fastestInterval = 3000
                     priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-                };
+                }
+
                 fusedLocationClient.requestLocationUpdates(
                     locationRequest,
                     locationCallback,
                     Looper.getMainLooper()
                 )
+
 
             }
         } else {

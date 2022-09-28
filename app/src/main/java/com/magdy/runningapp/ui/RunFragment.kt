@@ -1,9 +1,12 @@
 package com.magdy.runningapp.ui
 
 import android.Manifest
+import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.AdapterView
 import androidx.fragment.app.Fragment
 
@@ -12,40 +15,54 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.magdy.runningapp.R
 import com.magdy.runningapp.adapter.RunAdapter
+import com.magdy.runningapp.databinding.FragmentRunBinding
 import com.magdy.runningapp.utils.Constant.BACKGROUND_LOCATION
 import com.magdy.runningapp.utils.Constant.COARSE_LOCATION
 import com.magdy.runningapp.utils.Constant.FINE_LOCATION
+import com.magdy.runningapp.utils.Constant.KEY_NAME
 import com.magdy.runningapp.utils.Constant.RATIONAL_MESSAGE
 import com.magdy.runningapp.utils.Constant.REQUEST_CODE
 import com.magdy.runningapp.utils.SortType
 import com.magdy.runningapp.utils.TrackingUtility
 import com.magdy.runningapp.viewModels.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_run.*
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
 import pub.devrel.easypermissions.RationaleDialogFragment
+import javax.inject.Inject
 
 @AndroidEntryPoint
-class RunFragment : Fragment(R.layout.fragment_run), EasyPermissions.PermissionCallbacks {
+class RunFragment : Fragment(), EasyPermissions.PermissionCallbacks {
 
     private val viewModel: MainViewModel by viewModels()
     private lateinit var runAdapter: RunAdapter
+    lateinit var binding:FragmentRunBinding
+
+    @Inject
+    lateinit var sharedPreferences: SharedPreferences
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding=FragmentRunBinding.inflate(inflater)
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         requestPermissions()
         setUpRecyclerView()
-
         when(viewModel.sortType){
-            SortType.DATE-> spFilter.setSelection(0)
-            SortType.TIME_RUNNING->spFilter.setSelection(1)
-            SortType.DISTANCE->spFilter.setSelection(2)
-            SortType.AVE_SPEED->spFilter.setSelection(3)
-            SortType.CALORIES_BURNED->spFilter.setSelection(4)
+            SortType.DATE->binding.spFilter.setSelection(0)
+            SortType.TIME_RUNNING->binding.spFilter.setSelection(1)
+            SortType.DISTANCE->binding.spFilter.setSelection(2)
+            SortType.AVE_SPEED->binding.spFilter.setSelection(3)
+            SortType.CALORIES_BURNED->binding.spFilter.setSelection(4)
         }
 
-        spFilter.onItemSelectedListener=object :AdapterView.OnItemSelectedListener{
+        binding.spFilter.onItemSelectedListener=object :AdapterView.OnItemSelectedListener{
             override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 when(position){
                  0->viewModel.sortType(SortType.DATE)
@@ -60,17 +77,17 @@ class RunFragment : Fragment(R.layout.fragment_run), EasyPermissions.PermissionC
 
         }
 
-        viewModel.runs.observe(viewLifecycleOwner) {
-            runAdapter.submitList(it)
+        viewModel.runs.observe(viewLifecycleOwner) {list->
+            runAdapter.submitList(list)
         }
 
-        fab.setOnClickListener {
+        binding.fab.setOnClickListener {
             findNavController().navigate(R.id.action_runFragment_to_trackingFragment)
         }
 
     }
 
-    private fun setUpRecyclerView()=rvRuns.apply {
+    private fun setUpRecyclerView()=binding.rvRuns.apply {
         runAdapter=RunAdapter()
         setHasFixedSize(true)
         adapter=runAdapter
@@ -103,6 +120,7 @@ class RunFragment : Fragment(R.layout.fragment_run), EasyPermissions.PermissionC
 
 
     override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {
+
 
     }
 
